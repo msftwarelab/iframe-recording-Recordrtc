@@ -5,13 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recording Page</title>
     <style>
-      #canvas {
+      /* #capturedCanvas {
         position: absolute;
         z-index: -1;
         top: 0;
         left: 0;
+      } */
+      html,
+      body {
+        margin: 0 !important;
+        padding: 0 !important;
       }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   </head>
   <body>
     <iframe
@@ -19,32 +26,59 @@
       src="hello world.html"
       width="800"
       height="600"
-      allow="autoplay; fullscreen"
+      allow="autoplay; fullscreen; display-capture"
     ></iframe>
-    <canvas id="canvas" width="800" height="600"></canvas>
+    <!-- <canvas id="canvas" width="800" height="600"></canvas> -->
     <script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
     <script src="https://www.webrtc-experiment.com/screenshot.js"></script>
 
     <script>
       const targetIFrame = document.getElementById("targetFrame");
 
-      //   const iframeWindow = targetIFrame.contentWindow || targetIFrame.contentDocument;
-      const canvas = document.getElementById("canvas");
-
-      const recorder = new RecordRTC(canvas, {
-        type: "canvas",
-        mimeType: "video/webm",
-      });
-
       function startRecording() {
         console.log("=============> Start Recording");
 
-        recorder.startRecording();
+        html2canvas(targetIFrame, {
+          scrollX: 0,
+          scrollY: 0,
+          width: targetIFrame.offsetWidth,
+          height: targetIFrame.offsetHeight,
+          scale: 1,
+        }).then(function (canvas) {
+          canvas.id = "capturedCanvas";
+          document.body.appendChild(canvas);
+          console.log("===========> canvas: ", canvas);
+          recorder = RecordRTC(canvas.captureStream(), {
+            type: "video",
+            mimeType: "video/webm",
+          });
+
+          recorder.startRecording();
+        });
       }
 
       // Function to stop recording
       function stopRecording() {
         console.log("=============> Stop Recording");
+        recorder.stopRecording(function () {
+          var blob = recorder.getBlob();
+          const url = URL.createObjectURL(blob);
+
+          // Create a video element to preview the recorded video
+          const videoElement = document.createElement("video");
+          videoElement.controls = true;
+          videoElement.src = url;
+          document.body.appendChild(videoElement);
+
+          // You can also save the blob as a downloadable file
+          const downloadLink = document.createElement("a");
+          downloadLink.href = url;
+          downloadLink.download = "recorded_video.webm";
+          downloadLink.textContent = "Download Recorded Video";
+          document.body.appendChild(downloadLink);
+
+          // Use the recorded blob as desired
+        });
       }
 
       window.addEventListener("message", function (event) {
