@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=1080, height=1920, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Video Presentation</title>
+
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/league.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-background-image="abandoned-factory.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="125"
+              >Presentation slide 1
+            </span>
+          </h1>
+        </section>
+        <section data-background-image="abandoned-warehouse.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="250"
+              >Presentation slide 2</span
+            >
+          </h1>
+        </section>
+        <section data-background-image="abandoned-factory.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="125"
+              >Presentation slide 1
+            </span>
+          </h1>
+        </section>
+        <section data-background-image="abandoned-warehouse.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="250"
+              >Presentation slide 2</span
+            >
+          </h1>
+        </section>
+        <section data-background-image="abandoned-factory.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="125"
+              >Presentation slide 1
+            </span>
+          </h1>
+        </section>
+        <section data-background-image="abandoned-warehouse.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="250"
+              >Presentation slide 2</span
+            >
+          </h1>
+        </section>
+        <section data-background-image="abandoned-factory.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="125"
+              >Presentation slide 1
+            </span>
+          </h1>
+        </section>
+        <section data-background-image="abandoned-warehouse.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="250"
+              >Presentation slide 2</span
+            >
+          </h1>
+        </section>
+        <section data-background-image="abandoned-factory.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="125"
+              >Presentation slide 1
+            </span>
+          </h1>
+        </section>
+        <section data-background-image="abandoned-warehouse.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="250"
+              >Presentation slide 2</span
+            >
+          </h1>
+        </section>
+        <section data-background-image="abandoned-factory.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="125"
+              >Presentation slide 1
+            </span>
+          </h1>
+        </section>
+        <section data-background-image="abandoned-warehouse.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="250"
+              >Presentation slide 2</span
+            >
+          </h1>
+        </section>
+        <section data-background-image="abandoned-factory.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="125"
+              >Presentation slide 1
+            </span>
+          </h1>
+        </section>
+        <section data-background-image="abandoned-warehouse.jpg">
+          <h1 class="r-fit-text">
+            <span class="fragment" data-autoslide="250"
+              >Presentation slide 2</span
+            >
+          </h1>
+        </section>
+      </div>
+    </div>
+    <script src="dist/reveal.js"></script>
+    <script>
+      var message1 = "animationStart";
+      window.parent.postMessage(message1, "*");
+      var audio = new Audio("helloworld.ogg");
+      Reveal.initialize({
+        transition: "fade",
+        autoSlide: 1,
+      });
+      audio.play();
+
+      var totalSlides = Reveal.getTotalSlides();
+      var finishedSlides = 0;
+      Reveal.addEventListener("slidechanged", function (event) {
+        finishedSlides++;
+
+        if (finishedSlides === totalSlides - 1) {
+          var message = "animationEnded";
+          window.parent.postMessage(message, "*");
+        }
+      });
+    </script>
+  </body>
+</html>

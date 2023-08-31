@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recording Page</title>
+    <style>
+      #canvas {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe
+      id="targetFrame"
+      src="hello world.html"
+      width="800"
+      height="600"
+      allow="autoplay; fullscreen"
+    ></iframe>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
+    <script src="https://www.webrtc-experiment.com/screenshot.js"></script>
+
+    <script>
+      const targetIFrame = document.getElementById("targetFrame");
+
+      //   const iframeWindow = targetIFrame.contentWindow || targetIFrame.contentDocument;
+      const canvas = document.getElementById("canvas");
+
+      const recorder = new RecordRTC(canvas, {
+        type: "canvas",
+        mimeType: "video/webm",
+      });
+
+      function startRecording() {
+        console.log("=============> Start Recording");
+
+        recorder.startRecording();
+      }
+
+      // Function to stop recording
+      function stopRecording() {
+        console.log("=============> Stop Recording");
+      }
+
+      window.addEventListener("message", function (event) {
+        console.log("Message received from the child: " + event.data); // Message received from child
+        if (event.data == "animationStart") {
+          startRecording();
+        } else if (event.data == "animationEnded") {
+          stopRecording();
+        }
+      });
+    </script>
+  </body>
+</html>
