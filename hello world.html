@@ -16,99 +16,57 @@
       <div class="slides">
         <section data-background-image="abandoned-factory.jpg">
           <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="125"
+            <span class="fragment" data-autoslide="400"
               >Presentation slide 1
             </span>
           </h1>
         </section>
         <section data-background-image="abandoned-warehouse.jpg">
           <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="250"
+            <span class="fragment" data-autoslide="400"
               >Presentation slide 2</span
             >
           </h1>
         </section>
         <section data-background-image="abandoned-factory.jpg">
           <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="125"
-              >Presentation slide 1
+            <span class="fragment" data-autoslide="400"
+              >Presentation slide 3
             </span>
           </h1>
         </section>
         <section data-background-image="abandoned-warehouse.jpg">
           <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="250"
-              >Presentation slide 2</span
+            <span class="fragment" data-autoslide="400"
+              >Presentation slide 4</span
             >
           </h1>
         </section>
         <section data-background-image="abandoned-factory.jpg">
           <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="125"
-              >Presentation slide 1
+            <span class="fragment" data-autoslide="400"
+              >Presentation slide 5
             </span>
           </h1>
         </section>
         <section data-background-image="abandoned-warehouse.jpg">
           <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="250"
-              >Presentation slide 2</span
+            <span class="fragment" data-autoslide="400"
+              >Presentation slide 6</span
             >
           </h1>
         </section>
         <section data-background-image="abandoned-factory.jpg">
           <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="125"
-              >Presentation slide 1
+            <span class="fragment" data-autoslide="400"
+              >Presentation slide 7
             </span>
           </h1>
         </section>
         <section data-background-image="abandoned-warehouse.jpg">
           <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="250"
-              >Presentation slide 2</span
-            >
-          </h1>
-        </section>
-        <section data-background-image="abandoned-factory.jpg">
-          <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="125"
-              >Presentation slide 1
-            </span>
-          </h1>
-        </section>
-        <section data-background-image="abandoned-warehouse.jpg">
-          <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="250"
-              >Presentation slide 2</span
-            >
-          </h1>
-        </section>
-        <section data-background-image="abandoned-factory.jpg">
-          <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="125"
-              >Presentation slide 1
-            </span>
-          </h1>
-        </section>
-        <section data-background-image="abandoned-warehouse.jpg">
-          <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="250"
-              >Presentation slide 2</span
-            >
-          </h1>
-        </section>
-        <section data-background-image="abandoned-factory.jpg">
-          <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="125"
-              >Presentation slide 1
-            </span>
-          </h1>
-        </section>
-        <section data-background-image="abandoned-warehouse.jpg">
-          <h1 class="r-fit-text">
-            <span class="fragment" data-autoslide="250"
-              >Presentation slide 2</span
+            <span class="fragment" data-autoslide="400"
+              >Presentation slide 8</span
             >
           </h1>
         </section>
@@ -116,25 +74,44 @@
     </div>
     <script src="dist/reveal.js"></script>
     <script>
-      var message1 = "animationStart";
-      window.parent.postMessage(message1, "*");
-      var audio = new Audio("helloworld.ogg");
-      Reveal.initialize({
-        transition: "fade",
-        autoSlide: 1,
-      });
-      audio.play();
+      function bindEvent(element, eventName, eventHandler) {
+        if (element.addEventListener) {
+          element.addEventListener(eventName, eventHandler, false);
+        } else if (element.attachEvent) {
+          element.attachEvent("on" + eventName, eventHandler);
+        }
+      }
 
-      var totalSlides = Reveal.getTotalSlides();
-      var finishedSlides = 0;
-      Reveal.addEventListener("slidechanged", function (event) {
-        finishedSlides++;
+      var sendMessage = function (msg) {
+        window.parent.postMessage(msg, "*");
+      };
 
-        if (finishedSlides === totalSlides - 1) {
-          var message = "animationEnded";
-          window.parent.postMessage(message, "*");
+      bindEvent(window, "message", function (e) {
+        var msg = e.data;
+        if (msg == "animationStart") {
+          animationStart();
         }
       });
+      sendMessage("documentIsReady");
+
+      function animationStart() {
+        var audio = new Audio("helloworld.ogg");
+        Reveal.initialize({
+          transition: "fade",
+          autoSlide: 1,
+        });
+        audio.play();
+
+        var totalSlides = Reveal.getTotalSlides();
+        var finishedSlides = 0;
+        Reveal.addEventListener("slidechanged", function (event) {
+          finishedSlides++;
+
+          if (finishedSlides === totalSlides - 1) {
+            sendMessage("animationEnded");
+          }
+        });
+      }
     </script>
   </body>
 </html>
